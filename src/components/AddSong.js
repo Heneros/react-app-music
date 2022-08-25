@@ -3,19 +3,10 @@ import { TextField, InputAdornment, Button, Dialog, DialogContent, DialogTitle, 
 import { AddBoxOutlined, Link } from '@mui/icons-material';
 import AddSongStyles from './styles/AddSongStyles';
 
-import { createGlobalStyle } from 'styled-components';
+import GlobalStyle from './styles/GlobalStyles';
 
 
 
-
-const GlobalStyle = createGlobalStyle`
-  .thumbnail{
-    width: 90%;
-  }
-  .dialog{
-    text-align: center;
-}
-`
 
 function AddSong() {
     const [dialog, setDialog] = React.useState(false);
