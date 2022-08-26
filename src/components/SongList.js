@@ -1,6 +1,7 @@
-import { PlayArrow } from '@mui/icons-material';
-import { Card, CardActionArea, CardActions, CardContent, CircularProgress, IconButton, Typography } from '@mui/material';
+import { PlayArrow, Save } from '@mui/icons-material';
+import { Card, CardActionArea, CardActions, CardContent, CardMedia, CircularProgress, IconButton, Typography } from '@mui/material';
 import React from 'react';
+import GlobalStyles from './styles/GlobalStyles';
 
 function SongList() {
     let loading = false; ///if false not show spinner
@@ -8,7 +9,7 @@ function SongList() {
     const song = {
         title: "Crystals",
         artist: "M.O.O.N.",
-        thumbnail: "https://www.youtube.com/watch?v=AVblOqZBlJw"
+        thumbnail: "https://avatars.githubusercontent.com/u/25700704?v=4",
     }
 
     if (loading) {
@@ -31,21 +32,28 @@ function SongList() {
 }
 function Song({ song }) {
     const { title, artist, thumbnail } = song; ///destruction array song
-    return <Card>
-        <div>
-            <CardContent>
-                <Typography gutterBottom variant="h5" component="h2">
-                    {title}
-                </Typography>
-                <Typography variant="body1" component="p" color="textSecondary">
-                    {artist}
-                </Typography>
-            </CardContent>
-            <CardActions>
-                <IconButton size="small" color="primary">
-                    <PlayArrow />
-                </IconButton>
-            </CardActions>
+    return <Card className='container-card'>
+        <GlobalStyles />
+        <div className='songinfo-container'>
+            <CardMedia image={thumbnail} className="cardmedia-thumbnail" />
+            <div className='songinfo'>
+                <CardContent>
+                    <Typography gutterBottom variant="h5" component="h2">
+                        {title}
+                    </Typography>
+                    <Typography variant="body1" component="p" color="textSecondary">
+                        {artist}
+                    </Typography>
+                </CardContent>
+                <CardActions>
+                    <IconButton size="small" color="primary">
+                        <PlayArrow />
+                    </IconButton>
+                    <IconButton size="small" color="secondary">
+                        <Save color='secondary' />
+                    </IconButton>
+                </CardActions>
+            </div>
         </div>
     </Card>
 }

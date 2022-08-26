@@ -25,7 +25,7 @@ function AddSong() {
                         className='dialog'
                         open={dialog}
                         onClose={handleCloseDialog}
-                    >
+                    >      
                         <DialogTitle>Edit Song</DialogTitle>
                         <DialogContent>
 
