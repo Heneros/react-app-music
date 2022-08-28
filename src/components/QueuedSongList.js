@@ -1,7 +1,9 @@
 import React from 'react';
 
 function QueuedSongList() {
-    return <div>QueuedSongList</div>
+    return <div style={{}}>
+
+    </div>
 }
 
 export default QueuedSongList;

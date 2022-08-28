@@ -8,6 +8,7 @@ import { Grid } from '@mui/material';
 function App() {
   return (
     <>
+    
       <Header />
       <Grid container spacing={3}>
         <Grid
@@ -16,7 +17,14 @@ function App() {
           <AddSong />
           <SongList />
         </Grid>
-        <Grid item xs={12} md={5}>
+        <Grid
+          style={{
+            position: 'fixed',
+            width: '100%',
+            right: 0,
+            top: 70
+          }}
+          item xs={12} md={5}>
           <SongPlayer />
         </Grid>
       </Grid>
