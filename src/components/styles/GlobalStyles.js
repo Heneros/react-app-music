@@ -49,5 +49,26 @@ const GlobalStyle = createGlobalStyle`
   width:38pc;
   height:38pc;
 }
+
+.queued-avatar{
+  width: 44px;
+  height: 44px;
+}
+.queued-text{
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.queued-container{
+display: grid;
+grid-auto-flow: column;
+grid-template-columns: 50px auto 50px;
+grid-gap: 12;
+align-items: center;
+margin-top: 10px
+}
+.queued-infocontainer{
+  overflow: hidden;
+  white-space: nowrap;
+}
 `
 export default GlobalStyle;
