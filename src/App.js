@@ -20,7 +20,7 @@ function App() {
       <Grid container spacing={3}>
         <Grid
           style={{
-            paddingTop: greaterThanSm ? 80 : 10
+            paddingTop: greaterThanSm ? 80 : 10 ////If smaller sm show 10, if not 80 
           }}
           item xs={12} md={7}>
           <AddSong />
