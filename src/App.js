@@ -3,22 +3,25 @@ import Header from './components/Header';
 import AddSong from './components/AddSong';
 import SongList from './components/SongList';
 import SongPlayer from './components/SongPlayer';
-import { Grid } from '@mui/material';
+import { Grid, Hidden } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 
 
 function App() {
   const theme = useTheme();
-
+  const greaterThanSm = useMediaQuery(theme.breakpoints.up('sm'));
   const greaterThanMd = useMediaQuery(theme.breakpoints.up('md'));
   return (
     <>
-
-      <Header />
+      <Hidden only="xs">
+        <Header />
+      </Hidden>
       <Grid container spacing={3}>
         <Grid
-          style={{ paddingTop: 80 }}
+          style={{
+            paddingTop: greaterThanSm ? 80 : 10
+          }}
           item xs={12} md={7}>
           <AddSong />
           <SongList />
