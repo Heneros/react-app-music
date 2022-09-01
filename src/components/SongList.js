@@ -1,16 +1,19 @@
 import { PlayArrow, Save } from '@mui/icons-material';
 import { Card, CardActionArea, CardActions, CardContent, CardMedia, CircularProgress, IconButton, Typography } from '@mui/material';
 import React from 'react';
+import { GET_SONGS } from '../graphql/queries';
 import GlobalStyles from './styles/GlobalStyles';
+import { useQuery } from '@apollo/client';
 
 function SongList() {
-    let loading = false; ///if false not show spinner
+    // let loading = false; ///if false not show spinner
+    const { data, loading, error } = useQuery(GET_SONGS)
 
-    const song = {
-        title: "Crystals",
-        artist: "M.O.O.N.",
-        thumbnail: "https://avatars.githubusercontent.com/u/25700704?v=4",
-    }
+    // const song = {
+    //     title: "Crystals",
+    //     artist: "M.O.O.N.",
+    //     thumbnail: "https://avatars.githubusercontent.com/u/25700704?v=4",
+    // }
 
     if (loading) {
         return (
@@ -24,11 +27,16 @@ function SongList() {
             </div>
         )
     }
+    if (error) return <div>Error fetching songs</div>
 
 
-    return <div>{Array.from({ length: 10 }, () => song).map((song, i) => (
-        <Song key={i} song={song} /> ///output 10 items song, song array
-    ))} </div>
+    return <div>
+        {/* /////// Array.from receive 10 items */}
+        {/* {Array.from({ length: 10 }, () => song).map((song, i) => (  */}
+        {data.songs.map( song => (
+            <Song key={song.id} song={song} /> ///output 10 items song, song array
+        ))}
+    </div>
 }
 function Song({ song }) {
     const { title, artist, thumbnail } = song; ///destruction array song
