@@ -4,6 +4,7 @@ import { AddBoxOutlined, Link } from '@mui/icons-material';
 import AddSongStyles from './styles/AddSongStyles';
 
 import GlobalStyle from './styles/GlobalStyles';
+import ReactPlayer from 'react-player';
 import SoundCloudPlayer from 'react-player/soundcloud';
 import YouTubePlayer from 'react-player/youtube';
 
@@ -14,6 +15,12 @@ function AddSong() {
     const [dialog, setDialog] = React.useState(false);
     const [url, setUrl] = React.useState('');
     const [playable, setPlayable] = React.useState(false);
+    const [song, setSong] = React.useState({
+        duration: 0,
+        title: "",
+        artist: "",
+        thumbnail: ""
+    })
 
     React.useEffect(() => {
         const isPlayable = SoundCloudPlayer.canPlay(url) || YouTubePlayer.canPlay(url);
@@ -25,7 +32,46 @@ function AddSong() {
     function handleCloseDialog() {
         setDialog(false); ///false = on default popup hide
     }
+    async function handleEditSong({ player }) {
+        const nestedPlayer = player.player.player;
+        let songData;
+        if (nestedPlayer.getVideoData) {
+            songData = getYoutubeInfo(nestedPlayer)
+        } else if (nestedPlayer.getCurrentSound) {
+            songData = await getSoundcloudInfo(nestedPlayer)
+        }
+        setSong({ ...songData, url });
+    }
 
+    function getYoutubeInfo(player) {
+        const duration = player.getDuration();
+        const { title, video_id, author } = player.getVideoData();
+        const thumbnail = `http://img.youtube.com/vi/${video_id}/0.jpg`;
+        return {
+            duration,
+            title,
+            artist: author,
+            thumbnail
+        }
+    }
+    function getSoundcloudInfo(player) {
+        ///save with Promise condition object songData
+        return new Promise(resolve => {
+            player.getCurrentSound(songData => {
+                if (songData) {
+                    resolve({
+                        duration: Number(songData.duration / 1000), ////
+                        title: songData.title,
+                        artist: songData.user.username,
+                        thumbnail: songData.artwork_url.replace('-large', '-t500x500')
+                    })
+                }
+            })
+        })
+
+    }
+
+    const { thumbnail, title, artist } = song;
     return (
         <div>
             <GlobalStyle />
@@ -41,21 +87,25 @@ function AddSong() {
 
                             <img
                                 className='thumbnail'
-                                src="https://avatars.githubusercontent.com/u/25700704?v=4" alt="Song thumbnail" />
+                                src={thumbnail}
+                                alt="Song thumbnail" />
 
                             <TextField
+                                value={title}
                                 margin="dense"
                                 name="title"
                                 label="Title"
                                 fullWidth
                             />
                             <TextField
+                                value={artist}
                                 margin="dense"
                                 name="artist"
                                 label="Artist"
                                 fullWidth
                             />
                             <TextField
+                                value={thumbnail}
                                 margin="dense"
                                 name="thumbnail"
                                 label="Thumbnail"
@@ -94,6 +144,7 @@ function AddSong() {
                         variant='contained' color="primary" endIcon={<AddBoxOutlined />}>
                         Add
                     </Button>
+                    <ReactPlayer url={url} hidden onReady={handleEditSong} />
                 </div>
             </AddSongStyles>
         </div>
