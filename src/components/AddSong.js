@@ -20,7 +20,7 @@ const DEFAULT_SONG = {
 
 function AddSong() {
     const [dialog, setDialog] = React.useState(false);
-    const [addSong] = useMutation(ADD_SONG);
+    const [addSong, { error }] = useMutation(ADD_SONG);
     const [url, setUrl] = React.useState('');
     const [playable, setPlayable] = React.useState(false);
     const [song, setSong] = React.useState(DEFAULT_SONG)
@@ -103,7 +103,13 @@ function AddSong() {
 
     }
 
+    function handleError(field) {
+        // return error && error.graphQLErrors[0].extensions.path.includes(field);//only if u caught error
+        return error?.graphQLErrors[0]?.extensions?.path.includes(field);/// '?' check exists property or object
+    }
+
     const { thumbnail, title, artist } = song;
+    console.dir(error);//entire object
     return (
         <div>
             <GlobalStyle />
@@ -129,6 +135,8 @@ function AddSong() {
                                 name="title"
                                 label="Title"
                                 fullWidth
+                                error={handleError('title')}
+                                helperText={handleError('title') && 'Fill out field'}
                             />
                             <TextField
                                 value={artist}
@@ -137,6 +145,8 @@ function AddSong() {
                                 name="artist"
                                 label="Artist"
                                 fullWidth
+                                error={handleError('artist')}
+                                helperText={handleError('artist') && 'Fill out field'}
                             />
                             <TextField
                                 value={thumbnail}
@@ -145,6 +155,8 @@ function AddSong() {
                                 name="thumbnail"
                                 label="Thumbnail"
                                 fullWidth
+                                error={handleError('thumbnail')}
+                                helperText={handleError('thumbnail') && 'Fill out field'}
                             />
                         </DialogContent>
                         <DialogActions>
