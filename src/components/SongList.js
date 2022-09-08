@@ -1,14 +1,24 @@
 import { PlayArrow, Save } from '@mui/icons-material';
 import { Card, CardActionArea, CardActions, CardContent, CardMedia, CircularProgress, IconButton, Typography } from '@mui/material';
 import React from 'react';
-import { GET_SONGS } from '../graphql/queries';
+import { GET_SONGS } from '../graphql/subscriptions';
 import GlobalStyles from './styles/GlobalStyles';
-import { useQuery } from '@apollo/client';
-
-function SongList() {
+// import { useQuery } from '@apollo/client';
+import { useQuery, useSubscription } from '@apollo/client';
+function SongList({ created_at }) {
     // let loading = false; ///if false not show spinner
-    const { data, loading, error } = useQuery(GET_SONGS)
+    const { data, loading, error } = useSubscription(
+        GET_SONGS,
+        // onSubscriptionData: (data) => {
+        //     console.log(data)
+        //     const message = data.subscriptionData.data.songs;
+        //     console.log("List Songs")
+        // }
 
+        { variables: { created_at } }
+    );
+    console.log(data);
+    // const { data, loading, error } = useQuery(GET_SONGS)
     // const song = {
     //     title: "Crystals",
     //     artist: "M.O.O.N.",
@@ -29,11 +39,10 @@ function SongList() {
     }
     if (error) return <div>Error fetching songs</div>
 
-
     return <div>
         {/* /////// Array.from receive 10 items */}
         {/* {Array.from({ length: 10 }, () => song).map((song, i) => (  */}
-        {data.songs.map( song => (
+        {data.songs.map(song => (
             <Song key={song.id} song={song} /> ///output 10 items song, song array
         ))}
     </div>
