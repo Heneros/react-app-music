@@ -2,22 +2,24 @@ import { PlayArrow, Save } from '@mui/icons-material';
 import { Card, CardActionArea, CardActions, CardContent, CardMedia, CircularProgress, IconButton, Typography } from '@mui/material';
 import React from 'react';
 import { GET_SONGS } from '../graphql/subscriptions';
+// import { GET_SONGS } from '../graphql/queries';
 import GlobalStyles from './styles/GlobalStyles';
 // import { useQuery } from '@apollo/client';
 import { useQuery, useSubscription } from '@apollo/client';
+
+
+
 function SongList({ created_at }) {
     // let loading = false; ///if false not show spinner
     const { data, loading, error } = useSubscription(
-        GET_SONGS,
-        // onSubscriptionData: (data) => {
-        //     console.log(data)
-        //     const message = data.subscriptionData.data.songs;
-        //     console.log("List Songs")
-        // }
+        GET_SONGS
 
-        { variables: { created_at } }
+
+
     );
     console.log(data);
+
+
     // const { data, loading, error } = useQuery(GET_SONGS)
     // const song = {
     //     title: "Crystals",
