@@ -17,7 +17,7 @@ function SongList({ created_at }) {
 
 
     );
-    console.log(data);
+  ////////  console.log(data);
 
 
     // const { data, loading, error } = useQuery(GET_SONGS)

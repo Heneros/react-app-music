@@ -109,7 +109,7 @@ function AddSong() {
     }
 
     const { thumbnail, title, artist } = song;
-    console.dir(error);//entire object
+    //////// console.dir(error);//entire object
     return (
         <div>
             <GlobalStyle />
