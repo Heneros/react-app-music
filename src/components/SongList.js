@@ -1,4 +1,4 @@
-import { PlayArrow, Save } from '@mui/icons-material';
+import { Pause, PlayArrow, Save } from '@mui/icons-material';
 import { Card, CardActionArea, CardActions, CardContent, CardMedia, CircularProgress, IconButton, Typography } from '@mui/material';
 import React from 'react';
 import { GET_SONGS } from '../graphql/subscriptions';
@@ -6,6 +6,8 @@ import { GET_SONGS } from '../graphql/subscriptions';
 import GlobalStyles from './styles/GlobalStyles';
 // import { useQuery } from '@apollo/client';
 import { useQuery, useSubscription } from '@apollo/client';
+import { SongContext } from '../App';
+
 
 
 
@@ -17,7 +19,7 @@ function SongList({ created_at }) {
 
 
     );
-  ////////  console.log(data);
+    ////////  console.log(data);
 
 
     // const { data, loading, error } = useQuery(GET_SONGS)
@@ -50,7 +52,20 @@ function SongList({ created_at }) {
     </div>
 }
 function Song({ song }) {
+    const { id } = song;
     const { title, artist, thumbnail } = song; ///destruction array song
+    const { state, dispatch } = React.useContext(SongContext);
+    const [currentSongPlaying, setCurrentSongPlaying] = React.useState(false);
+
+    React.useEffect(() => {
+        const isSongPlaying = state.isPlaying && id === state.song.id; ///check if isPlaying and particular song playing by id 
+        setCurrentSongPlaying(isSongPlaying) ///if true put variable isSongPlaying in useState
+    }, [id, state.song.id, state.isPlaying]); ///idintify song by id. state.isPlaying dependency array
+
+
+    // function handleTogglePlay() {
+    //     dispatch(state.isPlaying ? { type: "PAUSE_SONG" } : { type: "PLAY_SONG" });
+    // }
     return <Card className='container-card'>
         <GlobalStyles />
         <div className='songinfo-container'>
@@ -66,7 +81,7 @@ function Song({ song }) {
                 </CardContent>
                 <CardActions>
                     <IconButton size="small" color="primary">
-                        <PlayArrow />
+                        {currentSongPlaying ? <Pause /> : <PlayArrow />}
                     </IconButton>
                     <IconButton size="small" color="secondary">
                         <Save color='secondary' />

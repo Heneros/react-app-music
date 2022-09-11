@@ -1,4 +1,4 @@
-import { PlayArrow, SkipNext, SkipPrevious } from '@mui/icons-material';
+import { Pause, PlayArrow, SkipNext, SkipPrevious } from '@mui/icons-material';
 import { Card, CardContent, CardMedia, IconButton, Slider, Typography } from '@mui/material';
 import React from 'react';
 import { SongContext } from '../App';
@@ -7,7 +7,11 @@ import GlobalStyle from './styles/GlobalStyles';
 
 
 function SongPlayer() {
-    const { state } = React.useContext(SongContext);
+    const { state, dispatch } = React.useContext(SongContext);
+
+    function handleTogglePlay() {
+        dispatch(state.isPlaying ? { type: "PAUSE_SONG" } : { type: "PLAY_SONG" });
+    }
 
     return (
         <>
@@ -26,8 +30,8 @@ function SongPlayer() {
                         <IconButton>
                             <SkipPrevious />
                         </IconButton>
-                        <IconButton>
-                            <PlayArrow className='playicon-songplayer' />
+                        <IconButton onClick={handleTogglePlay}>
+                            {state.isPlaying ? <Pause className='playicon-songplayer' /> : <PlayArrow className='playicon-songplayer' />}
                         </IconButton>
                         <IconButton>
                             <SkipNext />
