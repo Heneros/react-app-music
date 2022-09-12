@@ -1,12 +1,19 @@
+import { useQuery } from '@apollo/client';
 import { Pause, PlayArrow, SkipNext, SkipPrevious } from '@mui/icons-material';
 import { Card, CardContent, CardMedia, IconButton, Slider, Typography } from '@mui/material';
 import React from 'react';
 import { SongContext } from '../App';
+import { GET_QUEUED_SONGS } from '../graphql/queries';
 import QueuedSongList from './QueuedSongList';
 import GlobalStyle from './styles/GlobalStyles';
 
 
 function SongPlayer() {
+    // useQuery
+    const { data } = useQuery(GET_QUEUED_SONGS);
+
+    console.log( data );
+
     const { state, dispatch } = React.useContext(SongContext);
 
     function handleTogglePlay() {
@@ -51,6 +58,7 @@ function SongPlayer() {
                     className='thumbnail-songplayer'
                     image={state.song.thumbnail} />
             </Card>
+            {/* <QueuedSongList queue={data.queue} /> */}
             <QueuedSongList />
         </>
     )

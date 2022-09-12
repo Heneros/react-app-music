@@ -5,7 +5,8 @@ import GlobalStyles from './styles/GlobalStyles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 
-function QueuedSongList() {
+function QueuedSongList({ queue }) {
+    console.log({ queue })
     const theme = useTheme();
 
     const greaterThanMd = useMediaQuery(theme.breakpoints.up('md'));
@@ -16,7 +17,7 @@ function QueuedSongList() {
         thumbnail: "https://avatars.githubusercontent.com/u/25700704?v=4",
     };
 
-    return greaterThanMd &&(<div style={{ margin: '10px 0' }}>
+    return greaterThanMd && (<div style={{ margin: '10px 0' }}>
         <Typography color="textSecondary" variant="button">
             QUEUE(5)
         </Typography>

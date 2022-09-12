@@ -69,14 +69,14 @@
 
 
 
-import { ApolloClient, HttpLink, InMemoryCache, split } from "@apollo/client";
+import { ApolloClient, gql, HttpLink, InMemoryCache, split } from "@apollo/client";
 import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
 import { createClient } from "graphql-ws";
 import { getMainDefinition } from "@apollo/client/utilities";
 import { HASURA_KEY, HASURA_URL, HASURA_WS } from "./keys";
 import { WebSocketLink } from 'apollo-link-ws';
 
-
+// import { gql } from '@apollo/client';
 
 // const wsLink = new GraphQLWsLink(createClient({
 //     url: HASURA_WS,
@@ -124,6 +124,55 @@ const link =
 const client = new ApolloClient({
     link,
     cache: new InMemoryCache(),
+    options: {
+        reconnect: true
+    },
+    // typeDefs: gql`
+
+    // `
 });
 
+// const data = {
+//     queue: []
+// }
+
+
+// client.writeQuery({
+//     query: gql`
+//       type Song {
+//         id: uuid!
+//         title: String!
+//         artist: String!
+//         thumbnail: String!
+//         duration: Float!
+//         url: String!
+//     }
+
+//     input SongInput{
+//         id: uuid!
+//         title: String!
+//         artist: String!
+//         thumbnail: String!
+//         duration: Float!
+//         url: String!
+//     }
+
+//     type Query{
+//         queue: [Song]! 
+//     }
+
+//     type Mutation {
+//         addOrRemoveFromQueue(input: SongInput!): [Song]!
+//     }
+//     `,
+//     data: {
+//       cartItems: []
+//     }
+//   });
+// client.writeData({ data });
+
+// cache.writeData({ id, data });
+// type Query{
+//     queue: [Song]! //////////// return al least url
+// }
 export default client;
