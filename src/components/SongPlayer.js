@@ -12,7 +12,7 @@ function SongPlayer() {
     // useQuery
     const { data } = useQuery(GET_QUEUED_SONGS);
 
-    console.log( data );
+    // console.log( data );
 
     const { state, dispatch } = React.useContext(SongContext);
 

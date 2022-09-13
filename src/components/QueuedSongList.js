@@ -6,7 +6,10 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 
 function QueuedSongList({ queue }) {
+  
     console.log({ queue })
+
+    
     const theme = useTheme();
 
     const greaterThanMd = useMediaQuery(theme.breakpoints.up('md'));

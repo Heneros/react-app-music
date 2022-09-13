@@ -16,7 +16,7 @@ query getSongs{
 
 export const GET_QUEUED_SONGS = gql `
 query getQueuedSongs{
-    queue @client{
+    queue @client{ 
         id
         duration
         title
@@ -26,3 +26,5 @@ query getQueuedSongs{
     }
 }
 `
+
+///queue @client means perform only on client side 
