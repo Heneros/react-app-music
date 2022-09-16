@@ -39,7 +39,7 @@ const link =
         )
         : httpLink;
 
-        const typeDefs = gql`
+export const typeDefs = gql`
        type Song {
         id: uuid!
         title: String!
@@ -49,37 +49,39 @@ const link =
         url: String!
     }
 
-    input SongInput{
-        id: uuid!
-        title: String!
-        artist: String!
-        thumbnail: String!
-        duration: Float!
-        url: String!
-    }
+    # input SongInput{
+    #     id: uuid!
+    #     title: String!
+    #     artist: String!
+    #     thumbnail: String!
+    #     duration: Float!
+    #     url: String!
+    # }
+    # type Query{
+    #     queue: [Song]! 
+    # }
 
-    type Query{
-        queue: [Song]! 
-    }
-
-    type Mutation {
-        addOrRemoveFromQueue(input: SongInput!): [Song]!
-    }
+    # type Mutation {
+    #     addOrRemoveFromQueue(input: SongInput!): [Song]!
+    # }
       `;
-      
+
 
 const client = new ApolloClient({
     link,
     cache: new InMemoryCache(),
-    typeDefs
+    typeDefs,
+    resolvers: {},
     // typeDefs: gql`
 
     // `
 });
 
-// const data = {
-//     queue: []
-// }
-// client.writeData({ data });
+const data = {
+    queue: []
+}
+// client.cache.evict({ data });
+console.log(client);
+client.cache.gc({data});
 
 export default client;
