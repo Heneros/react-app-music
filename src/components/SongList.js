@@ -11,13 +11,10 @@ import { SongContext } from '../App';
 
 
 
-function SongList({ created_at }) {
+function SongList() {
     // let loading = false; ///if false not show spinner
     const { data, loading, error } = useSubscription(
         GET_SONGS
-
-
-
     );
     ////////  console.log(data);
 

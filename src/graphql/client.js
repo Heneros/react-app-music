@@ -39,31 +39,29 @@ const link =
         )
         : httpLink;
 
-export const typeDefs = gql`
-       type Song {
-        id: uuid!
-        title: String!
-        artist: String!
-        thumbnail: String!
-        duration: Float!
-        url: String!
-    }
-
-    # input SongInput{
-    #     id: uuid!
-    #     title: String!
-    #     artist: String!
-    #     thumbnail: String!
-    #     duration: Float!
-    #     url: String!
-    # }
-    # type Query{
-    #     queue: [Song]! 
-    # }
-
-    # type Mutation {
-    #     addOrRemoveFromQueue(input: SongInput!): [Song]!
-    # }
+const typeDefs = gql`
+     extend type Song {
+            id: uuid!,
+            title: String!,
+            artist: String!,
+            thumbnail: String!,
+            url: String!,
+            duration: Float!
+        }
+        input SongInput {
+            id: uuid!,
+            title: String!,
+            artist: String!,
+            thumbnail: String!,
+            url: String!,
+            duration: Float!
+        }
+        extend type Query{
+            queue: [Song]!
+        }
+        extend  type Mutation{
+            addOrRemoveFromQueue(input: SongInput): [Song]!
+        }
       `;
 
 
@@ -71,17 +69,24 @@ const client = new ApolloClient({
     link,
     cache: new InMemoryCache(),
     typeDefs,
-    resolvers: {},
     // typeDefs: gql`
 
     // `
 });
 
+// const data = {
+//     queue: []
+// }
+const localQueue = localStorage.getItem('queue')
+const hasQueue = Boolean(localQueue);
+
 const data = {
-    queue: []
+    queue: hasQueue ? JSON.parse(localQueue) : []
 }
+// client.writeData({data});
+// client.writeQuery({ data });
 // client.cache.evict({ data });
-console.log(client);
+// console.log();
 client.cache.gc({data});
 
 export default client;
