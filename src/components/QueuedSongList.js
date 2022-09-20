@@ -8,7 +8,6 @@ import { useTheme } from '@mui/material/styles';
 function QueuedSongList({ queue }) {
 
     console.log({ queue })
-    console.log(queue);
 
     const theme = useTheme();
 

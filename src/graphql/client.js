@@ -3,7 +3,6 @@ import { getMainDefinition } from "@apollo/client/utilities";
 import { HASURA_KEY, HASURA_URL, HASURA_WS } from "./keys";
 import { WebSocketLink } from 'apollo-link-ws';
 
-
 const httpLink = new HttpLink({
     uri: HASURA_URL,
     headers: {
@@ -39,8 +38,10 @@ const link =
         )
         : httpLink;
 
-const typeDefs = gql`
-     extend type Song {
+
+
+export const typeDefs = gql`
+      type Song {
             id: uuid!,
             title: String!,
             artist: String!,
@@ -56,10 +57,10 @@ const typeDefs = gql`
             url: String!,
             duration: Float!
         }
-        extend type Query{
+         type Query{
             queue: [Song]!
         }
-        extend  type Mutation{
+          type Mutation{
             addOrRemoveFromQueue(input: SongInput): [Song]!
         }
       `;
@@ -69,24 +70,29 @@ const client = new ApolloClient({
     link,
     cache: new InMemoryCache(),
     typeDefs,
-    // typeDefs: gql`
-
-    // `
 });
 
-// const data = {
-//     queue: []
-// }
-const localQueue = localStorage.getItem('queue')
-const hasQueue = Boolean(localQueue);
 
-const data = {
-    queue: hasQueue ? JSON.parse(localQueue) : []
-}
+
+client.writeQuery({
+    query: gql`
+      query getQueuedSongs {
+        queue
+      }
+    `,
+    data: {
+        queue: []
+    }
+});
+
+
+// client.writeQuery()
+
+// client.writeQuery({queue})
+
 // client.writeData({data});
 // client.writeQuery({ data });
 // client.cache.evict({ data });
 // console.log();
-client.cache.gc({data});
 
 export default client;
