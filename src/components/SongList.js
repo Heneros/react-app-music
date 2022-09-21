@@ -5,8 +5,9 @@ import { GET_SONGS } from '../graphql/subscriptions';
 // import { GET_SONGS } from '../graphql/queries';
 import GlobalStyles from './styles/GlobalStyles';
 // import { useQuery } from '@apollo/client';
-import { useQuery, useSubscription } from '@apollo/client';
+import { useMutation, useQuery, useSubscription } from '@apollo/client';
 import { SongContext } from '../App';
+import { ADD_OR_REMOVE_FROM_QUEUE } from '../graphql/mutations';
 
 
 
@@ -51,6 +52,7 @@ function SongList() {
 function Song({ song }) {
     const { id } = song;
     const { title, artist, thumbnail } = song; ///destruction array song
+    const [addOrRemoveFromQueue] = useMutation(ADD_OR_REMOVE_FROM_QUEUE);///addOrRemoveFromQueue mutated function. from file mutations.js
     const { state, dispatch } = React.useContext(SongContext);
     const [currentSongPlaying, setCurrentSongPlaying] = React.useState(false);
 
@@ -64,6 +66,14 @@ function Song({ song }) {
         dispatch({ type: "SET_SONG", payload: { song } });
         dispatch(state.isPlaying ? { type: "PAUSE_SONG" } : { type: "PLAY_SONG" });
     }
+
+
+    function handleAddOrRemoveFromQueue() {
+        addOrRemoveFromQueue({
+            variables: { input: { ...song, __typename: 'Song' } }///
+        })
+    }
+
     return <Card className='container-card'>
         <GlobalStyles />
         <div className='songinfo-container'>
@@ -81,7 +91,7 @@ function Song({ song }) {
                     <IconButton onClick={handleTogglePlay} size="small" color="primary">
                         {currentSongPlaying ? <Pause /> : <PlayArrow />}
                     </IconButton>
-                    <IconButton size="small" color="secondary">
+                    <IconButton onClick={handleAddOrRemoveFromQueue} size="small" color="secondary">
                         <Save color='secondary' />
                     </IconButton>
                 </CardActions>

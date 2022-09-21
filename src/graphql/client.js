@@ -2,6 +2,7 @@ import { ApolloClient, gql, HttpLink, InMemoryCache, split } from "@apollo/clien
 import { getMainDefinition } from "@apollo/client/utilities";
 import { HASURA_KEY, HASURA_URL, HASURA_WS } from "./keys";
 import { WebSocketLink } from 'apollo-link-ws';
+import { GET_QUEUED_SONGS } from "./queries";
 
 const httpLink = new HttpLink({
     uri: HASURA_URL,
@@ -65,11 +66,33 @@ export const typeDefs = gql`
         }
       `;
 
-
+export const resolvers = {
+    Mutation: {
+        addOrRemoveFromQueue: (_, { input }, { cache }) => {
+            const queryResult = cache.readQuery({
+                query: GET_QUEUED_SONGS
+            })
+            if (queryResult) {
+                const { queue } = queryResult
+                const isInQueue = queue.some(song => song.id === input.id)
+                const newQueue = isInQueue ?
+                    queue.filter(song => song.id !== input.id)
+                    : [...queue, input];
+                cache.writeQuery({
+                    query: GET_QUEUED_SONGS,
+                    data: { queue: newQueue }
+                })
+                return newQueue;
+            }
+            return [];
+        }
+    }
+}
 const client = new ApolloClient({
     link,
     cache: new InMemoryCache(),
     typeDefs,
+    resolvers
 });
 
 
