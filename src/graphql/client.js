@@ -68,22 +68,27 @@ export const typeDefs = gql`
 
 export const resolvers = {
     Mutation: {
+        /// 3 params. first optional, all arguments its input, last param cache
         addOrRemoveFromQueue: (_, { input }, { cache }) => {
+           ///read query GET_QUEUED_SONGS
             const queryResult = cache.readQuery({
                 query: GET_QUEUED_SONGS
             })
             if (queryResult) {
                 const { queue } = queryResult
+                ///check if song equel to input(queue)
                 const isInQueue = queue.some(song => song.id === input.id)
+         
                 const newQueue = isInQueue ?
-                    queue.filter(song => song.id !== input.id)
-                    : [...queue, input];
+                    queue.filter(song => song.id !== input.id)       //if song in queue 
+                    : [...queue, input];                             /// add song to queue.
                 cache.writeQuery({
                     query: GET_QUEUED_SONGS,
                     data: { queue: newQueue }
                 })
-                return newQueue;
+                return newQueue; //return new array
             }
+            //if empty queryResult, return empty array
             return [];
         }
     }

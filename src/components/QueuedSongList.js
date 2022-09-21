@@ -10,20 +10,20 @@ function QueuedSongList({ queue }) {
     console.log({ queue })
 
     const theme = useTheme();
-
     const greaterThanMd = useMediaQuery(theme.breakpoints.up('md'));
 
-    const song = {
-        title: "Crystals",
-        artist: "M.O.O.N.",
-        thumbnail: "https://avatars.githubusercontent.com/u/25700704?v=4",
-    };
+    // const song = {
+    //     title: "Crystals",
+    //     artist: "M.O.O.N.",
+    //     thumbnail: "https://avatars.githubusercontent.com/u/25700704?v=4",
+    // };
 
     return greaterThanMd && (<div style={{ margin: '10px 0' }}>
         <Typography color="textSecondary" variant="button">
-            QUEUE(5)
+            QUEUE ({queue.length})
         </Typography>
-        {Array.from({ length: 5 }, () => song).map((song, i) => (
+        {/* {Array.from({ length: 5 }, () => song).map((song, i) => ( */}
+        {queue.map((song, i) => (
             <QueuedSong key={i} song={song} />
         ))}
     </div>)
