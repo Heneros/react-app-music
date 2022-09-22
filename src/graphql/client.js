@@ -70,7 +70,7 @@ export const resolvers = {
     Mutation: {
         /// 3 params. first optional, all arguments its input, last param cache
         addOrRemoveFromQueue: (_, { input }, { cache }) => {
-           ///read query GET_QUEUED_SONGS
+            ///read query GET_QUEUED_SONGS
             const queryResult = cache.readQuery({
                 query: GET_QUEUED_SONGS
             })
@@ -78,7 +78,7 @@ export const resolvers = {
                 const { queue } = queryResult
                 ///check if song equel to input(queue)
                 const isInQueue = queue.some(song => song.id === input.id)
-         
+
                 const newQueue = isInQueue ?
                     queue.filter(song => song.id !== input.id)       //if song in queue 
                     : [...queue, input];                             /// add song to queue.
@@ -100,7 +100,7 @@ const client = new ApolloClient({
     resolvers
 });
 
-
+const hasQueue = Boolean(localStorage.getItem('queue'));
 
 client.writeQuery({
     query: gql`
@@ -109,18 +109,11 @@ client.writeQuery({
       }
     `,
     data: {
-        queue: []
+        // queue: []
+        queue: hasQueue ? JSON.parse(localStorage.getItem('queue')) : []
     }
 });
 
 
-// client.writeQuery()
-
-// client.writeQuery({queue})
-
-// client.writeData({data});
-// client.writeQuery({ data });
-// client.cache.evict({ data });
-// console.log();
 
 export default client;

@@ -52,7 +52,11 @@ function SongList() {
 function Song({ song }) {
     const { id } = song;
     const { title, artist, thumbnail } = song; ///destruction array song
-    const [addOrRemoveFromQueue] = useMutation(ADD_OR_REMOVE_FROM_QUEUE);///addOrRemoveFromQueue mutated function. from file mutations.js
+    const [addOrRemoveFromQueue] = useMutation(ADD_OR_REMOVE_FROM_QUEUE, {
+        onCompleted: data => {
+            localStorage.setItem('queue', JSON.stringify(data.addOrRemoveFromQueue)) ///set to local storage
+        }
+    });///addOrRemoveFromQueue mutated function. from file mutations.js
     const { state, dispatch } = React.useContext(SongContext);
     const [currentSongPlaying, setCurrentSongPlaying] = React.useState(false);
 

@@ -4,6 +4,8 @@ import React from 'react';
 import GlobalStyles from './styles/GlobalStyles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
+import { useMutation } from '@apollo/client';
+import { ADD_OR_REMOVE_FROM_QUEUE } from '../graphql/mutations';
 
 function QueuedSongList({ queue }) {
 
@@ -31,6 +33,17 @@ function QueuedSongList({ queue }) {
 
 function QueuedSong({ song }) {
     const { thumbnail, artist, title } = song;
+    const [addOrRemoveFromQueue] = useMutation(ADD_OR_REMOVE_FROM_QUEUE, {
+        onCompleted: data => { //////Callback action save in local storage
+            localStorage.setItem('queue', JSON.stringify(data.addOrRemoveFromQueue)) ///set to local storage
+        }
+    });
+
+    function handleAddOrRemoveFromQueue() {
+        addOrRemoveFromQueue({
+            variables: { input: { ...song, __typename: 'Song' } }///
+        })
+    }
     return (
         <div className='queued-container'>
             < GlobalStyles />
@@ -43,7 +56,7 @@ function QueuedSong({ song }) {
                     {artist}
                 </Typography>
             </div>
-            <IconButton>
+            <IconButton onClick={handleAddOrRemoveFromQueue} >
                 <Delete color="error" />
             </IconButton>
         </div>)
